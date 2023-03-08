@@ -1,11 +1,17 @@
-﻿// Задача 57: Составить частотный словарь двумерного массива.
-// Частотный словарь содержит информацию о том, Сколько раз
-// встречается элемент входных данных.
+﻿// Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит
+// по убыванию элементы каждой строки двумерного массива.
+// Например, задан массив:
+//1 4 7 2
+//5 9 2 3
+//8 4 2 4
+//В итоге получается вот такой массив:
+//7 4 2 1
+//9 5 3 2
+//8 4 4 2
 
 
 Console.WriteLine("Введите число строк двумерного массива");
 int lines = int.Parse(Console.ReadLine());
-
 Console.WriteLine("Введите число столбцов двумерного массива");
 int columns = int.Parse(Console.ReadLine());
 
@@ -13,64 +19,39 @@ int[,] array_57 = Fill_Array(lines, columns);
 
 PrintArray(array_57);
 
-//Matrix_sort(array_57);
+Sorting_lines_in_a_two_dimensional_array(array_57);
 
-//PrintArray(array_57);
-
-int[] one_d_array = Two_dimensionnal_array_to_one_dementional(array_57);
-
-PrintArray(one_d_array);
-
-Array.Sort(one_d_array);
-
-PrintArray(one_d_array);
-
-List_of_numbers(one_d_array);  // решение задачи
+PrintArray(array_57);
 
 
-void List_of_numbers(int[] numbers)
+
+
+// Сортировка строк в двумерном массиве по убыванию
+void Sorting_lines_in_a_two_dimensional_array(int[,] _array)
 {
-    int count = 1;
-
-    for (int i = 0; i < numbers.Length; i++)
+    for (int k = 0; k < _array.GetLength(0); k++)
     {
-        if (i + 1 == numbers.Length)
+        for (int i = 0; i < _array.GetLength(1) - 1; i++)
         {
-            Console.WriteLine($"Количество {numbers[i]} в массиве равно {count}");
-            return;
-        }
-        if (numbers[i] != numbers[i + 1])
-        {
-            Console.WriteLine($"Количество {numbers[i]} в массиве равно {count}");
-            count = 1;
-        }
-        else
-        {
-            count++;
+            int max = _array[k, i];
+            int max_index = i;
+
+            for (int j = i + 1; j < _array.GetLength(1); j++)
+            {
+                if (_array[k, j] > max)
+                {
+                    max = _array[k, j];
+                    max_index = j;
+                }
+            }
+            int temp = _array[k, i];
+            _array[k, i] = max;
+            _array[k, max_index] = temp;
         }
     }
 }
 
-/// - и где XML комментарий, не пойму ?  короче этот метод копирует
-/// элементы двумерного массива в одномерный
-int[] Two_dimensionnal_array_to_one_dementional(int[,] _array)
-{
-    int[] array = new int[_array.GetLength(0) * _array.GetLength(1)];
-    int count = 0;
-
-    for (int i = 0; i < _array.GetLength(0); i++)
-    {
-        for (int j = 0; j < _array.GetLength(1); j++)
-        {
-            array[count] = _array[i, j];
-            count++;
-        }
-    }
-    return array;
-}
-
-
-
+// Заполнение массива
 int[,] Fill_Array(int m, int n)
 {
     int[,] _array = new int[m, n];
@@ -84,8 +65,6 @@ int[,] Fill_Array(int m, int n)
     }
     return _array;
 }
-
-
 
 
 //Вывести массив любого типа на консоль
@@ -111,46 +90,5 @@ void PrintArray(Array matrix)
             }
             Console.WriteLine();
             break;
-    }
-}
-
-
-
-void Matrix_sort(int[,] matrix)
-{  
-    for (int i = 0; i < matrix.GetLength(0); i++)
-    {
-        for (int j = 0;j < matrix.GetLength(1); j++)
-        {
-            int last_i = matrix.GetLength(0) - 1 - i;
-            int last_j = matrix.GetLength(1) - 1 - j;
-
-            int max = matrix[last_i, last_j];
-            int max_i = last_i;
-            int max_j = last_j;
-
-            for (int k = 0; k < matrix.GetLength(0) - i; k++)
-            {
-                for (int l = 0; l < matrix.GetLength(1); l++)
-                {                    
-                    if (k == last_i &&
-                        l == matrix.GetLength(1) - j)
-                    {
-                        goto Label;
-                    }
-
-                    if (matrix[k, l] > max)
-                    {
-                        max = matrix[k, l];
-                        max_i = k;
-                        max_j = l;                        
-                    }                    
-                }
-            }
-        Label:
-            int temp = matrix[last_i, last_j];
-            matrix[last_i, last_j] = max;
-            matrix[max_i, max_j] = temp;            
-        }
     }
 }
