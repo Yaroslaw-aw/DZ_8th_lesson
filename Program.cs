@@ -9,13 +9,14 @@
 
 
 
-var matrix_size = Create_matrix();
+var matrix1_size = Create_matrix("matrix_1");
+var matrix2_size = Create_matrix("matrix_2");
 
-int[,] matrix_1 = Fill_Array(matrix_size.lines, matrix_size.columns);
+int[,] matrix_1 = Fill_Array(matrix1_size.lines, matrix1_size.columns);
 
 PrintArray(matrix_1);
 
-int[,] matrix_2 = Fill_Array(matrix_size.columns, matrix_size.lines);
+int[,] matrix_2 = Fill_Array(matrix2_size.lines, matrix2_size.columns);
 
 PrintArray(matrix_2);
 
@@ -33,20 +34,16 @@ int[,] Matrix_multiplication(int[,] matrix1, int[,] matrix2)
     int lines = matrix1.GetLength(0);
     int columns = matrix2.GetLength(1);
 
-    int[,] matrix_result = new int[lines, columns];
+    int[,] matrix_result = new int[lines, columns];    
 
-    int sum = 0;
-
-    for (int i = 0; i < columns; i++)
+    for (int i = 0; i < lines; i++)
     {        
         for (int j = 0; j < columns; j++)
         {
-            for (int k = 0; k < columns; k++)
+            for (int k = 0; k < lines; k++)
             {
-                sum += matrix1[i, k] * matrix2[k, j];
-            }
-            matrix_result[i, j] = sum;
-            sum = 0;
+                matrix_result[i, j] += matrix1[i, k] * matrix2[k, j];
+            }             
         }        
     }
     return matrix_result;
@@ -55,8 +52,9 @@ int[,] Matrix_multiplication(int[,] matrix1, int[,] matrix2)
 
 
 // Задание размеров перемножаемых матриц
-(int lines, int columns) Create_matrix()
+(int lines, int columns) Create_matrix(string str)
 {
+    Console.WriteLine(str);
     Console.WriteLine("Введите количество строк первой матрицы");
     int lines = int.Parse(Console.ReadLine());
 
